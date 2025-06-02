@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .sidebar {
+            width: 250px;
+            background: #2a1a4f;
+            color: white;
+            padding: 30px 20px;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.15);
+        }
+        .sidebar h4 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            letter-spacing: 1.2px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s, color 0.3s;
+            box-shadow: inset 0 0 0 0 #bb86fc;
+        }
+        .sidebar a:hover {
+            background: #bb86fc;
+            color: #1a1a1a;
+            box-shadow: inset 200px 0 0 0 #bb86fc;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 60px 40px;
+            color: white;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .main-heading {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .reports {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255,255,255,0.15);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .report-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 1.2px;
+        }
+
+        .bar-container {
+            margin-bottom: 30px;
+        }
+
+        .bar-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.6);
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 15px;
+            text-align: right;
+            padding-right: 15px;
+            color: #fff;
+            font-weight: 700;
+            line-height: 30px;
+            white-space: nowrap;
+            user-select: none;
+            transition: width 2s ease;
+        }
+
+        .bar-users {
+            background: linear-gradient(90deg, #56ab2f, #a8e063);
+            width: 0;
+        }
+
+        .bar-tasks {
+            background: linear-gradient(90deg, #614385, #516395);
+            width: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h4>📋 Admin Panel</h4>
+        <a href="{% url 'user_list' %}">👤 Users</a>
+        <a href="{% url 'task_list' %}">✅ Tasks</a>
+        <a href="{% url 'report_list' %}">📊 Reports</a>
+        <a href="{% url 'custom_logout' %}">🚪 Logout</a>
+    </div>
+
+    <div class="content">
+        <div class="main-heading">📈 Admin Dashboard Overview</div>
+
+        <div class="reports" aria-label="User and Task Reports">
+            <div class="report-title">📊 Reports Overview</div>
+
+            <div class="bar-container">
+                <div class="bar-label">Users</div>
+                <div class="bar">
+                    <div class="bar-fill bar-users" id="userBar">0</div>
+                </div>
+            </div>
+
+            <div class="bar-container">
+                <div class="bar-label">Tasks</div>
+                <div class="bar">
+                    <div class="bar-fill bar-tasks" id="taskBar">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Replace these values with backend values
+        const userCount = 75;  // out of 100
+        const taskCount = 55;  // out of 100
+
+        function animateBar(id, value) {
+            const bar = document.getElementById(id);
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= value) {
+                    clearInterval(interval);
+                } else {
+                    width++;
+                    bar.style.width = width + '%';
+                    bar.textContent = width;
+                }
+            }, 15);
+        }
+
+        animateBar('userBar', userCount);
+        animateBar('taskBar', taskCount);
+    </script>
+</body>
+</html>

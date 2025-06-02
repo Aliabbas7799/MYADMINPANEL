@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2a1a4f;
+            color: white;
+            padding: 30px 20px;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h4 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            letter-spacing: 1.2px;
+            font-size: 24px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s, color 0.3s;
+            box-shadow: inset 0 0 0 0 #bb86fc;
+        }
+
+        .sidebar a:hover {
+            background: #bb86fc;
+            color: #1a1a1a;
+            box-shadow: inset 200px 0 0 0 #bb86fc;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 40px 60px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-table-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background-color: #17a2b8;
+        }
+
+        .edit-btn {
+            background-color: #28a745;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.03);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        td[colspan="6"] {
+            text-align: center;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h4>📋 Admin Panel</h4>
+        <a href="{% url 'user_list' %}">👤 Users</a>
+        <a href="{% url 'task_list' %}">✅ Tasks</a>
+        <a href="{% url 'report_list' %}">📊 Reports</a>
+        <a href="{% url 'custom_logout' %}">🚪 Logout</a>
+    </div>
+
+    <div class="main-content">
+        <h1>👥 User Management</h1>
+
+
+        <div class="user-table-container">
+            <div class="action-buttons">
+                <a href="{% url 'add_user' %}" class="btn add-btn">➕ Add User</a>
+                <a href="{% url 'dashboard' %}" class="btn add-btn">← Back</a>
+            </div>
+
+            <table class="table table-bordered table-hover">
+                <thead class="fancy-header">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.user_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>
+                            <a href="{% url 'edit_user' user.id %}" class="btn edit-btn">Edit</a>
+                            <a href="{% url 'delete_user' user.id %}" class="btn delete-btn" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6">No users found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
